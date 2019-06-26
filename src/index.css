@@ -1,3 +1,20 @@
 body{
-    padding:5px
+    padding:10px
+}
+
+/*井字棋样式*/
+.game{
+    display: flex;
+}
+.board-area{
+    width: 126px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 20px;
+}
+.square-input{
+    width:40px;
+    height: 40px;
+    border: 1px solid black;
+    background-color: transparent;
 }
