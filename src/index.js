@@ -39,16 +39,36 @@ class Board extends React.Component{
     }
 }
 
+class Step extends React.Component{
+    render(){
+        const step = this.props.step
+        return (
+                <li><button style={{background:'rgb(242,239,239)'}}>Go to move #{step}</button></li>
+        );
+    }
+}
+
 class Info extends React.Component{
     render(){
         const isXNext = this.props.isXNext
         const isOver = this.props.isOver
         const title = isOver ? <span>The game is over. {isXNext?'O':'X'} wins!</span> : <span>Next player: {isXNext?'X':'O'}</span>
+        const values = this.props.values
+        console.log(values)
+        let notEmpty = 0
+        const notEmptyItems = values.filter((item)=>item!==undefined)
+        const lists = notEmptyItems.map((item,index)=>{
+                notEmpty = notEmpty+1
+                console.log(notEmpty)
+                return <Step key={index.toString()} step={notEmpty} />
+        })
         return (
             <div>
                 {title}
-                <br/>
-                1.<button style={{background:'rgb(242, 239, 239)'}}>Go to game start</button>
+                <ol>
+                    <li><button style={{background:'rgb(242,239,239)'}}>Go to game start</button></li>
+                    {lists}
+               </ol>
             </div>
         );
     }
@@ -59,6 +79,7 @@ class Game extends React.Component{
         super(props);
         this.state = {
             isXNext:true,
+            isOver:false,
             values:new Array(9)
         }
         this.handleClickChange = this.handleClickChange.bind(this)
@@ -66,16 +87,13 @@ class Game extends React.Component{
 
     handleClickChange(index){
         const copyValues = this.state.values.slice(0);
-        // console.log(copyValues)
-        // console.log(copyValues[index])
         const isXNext = this.state.isXNext
         const isOver = this.state.isOver
         if(!isOver && !copyValues[index]){
             copyValues[index] = isXNext ? 'X':'O'
             this.setState({
                 isXNext:!isXNext,
-                values:copyValues,
-                isOver:false
+                values:copyValues
             })
         }
         // console.log(copyValues)
@@ -95,7 +113,7 @@ class Game extends React.Component{
         return(
             <div className="game">
                 <Board values={this.state.values} onValueChange={this.handleClickChange} />
-                <Info isXNext={this.state.isXNext} isOver={this.state.isOver} />
+                <Info isXNext={this.state.isXNext} isOver={this.state.isOver} values={this.state.values} />
             </div>
         );
     }
