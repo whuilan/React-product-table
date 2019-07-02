@@ -79,13 +79,6 @@ class Info extends React.Component{
                 lists.push(<Step key={i.toString()} step={i} onGoBackChange={this.props.onGoBackChange} />)
             }
         }       
-        // let notEmpty = 0
-        // const notEmptyItems = values.filter((item)=>item!==undefined)
-        // const lists = notEmptyItems.map((item,index)=>{
-        //         notEmpty = notEmpty+1
-        //         // console.log(notEmpty)
-        //         return <Step key={index.toString()} step={notEmpty} />
-        // })
         return (
             <div>
                 {title}
@@ -105,7 +98,8 @@ class Game extends React.Component{
             isXNext:true,
             isOver:false,
             values:new Array(9),
-            seqs:[]
+            seqs:[],
+            isBack:false
         }
         this.handleClickChange = this.handleClickChange.bind(this)
         this.handleResetClick = this.handleResetClick.bind(this)
@@ -114,12 +108,21 @@ class Game extends React.Component{
 
     handleClickChange(index){
         const copyValues = this.state.values.slice(0);
-        const copySeqs = this.state.seqs.slice()
+        let copySeqs = this.state.seqs.slice()
         const isXNext = this.state.isXNext
         const isOver = this.state.isOver
-        if(!isOver && !copyValues[index]){
+        const isBack = this.state.isBack
+        if(!isOver && !copyValues[index]){            
+            if(!isBack){
+                copySeqs.push(index)
+            }else{
+                copySeqs = copySeqs.filter((item)=>{
+                  return copyValues[item] === 'X' || copyValues[item] === 'O'
+                })
+                copySeqs.push(index)
+                console.log("Filter has been executed")
+            }
             copyValues[index] = isXNext ? 'X':'O'
-            copySeqs.push(index)
             this.setState({
                 isXNext:!isXNext,
                 values:copyValues,
@@ -142,7 +145,9 @@ class Game extends React.Component{
         const emptyArray = new Array(9);
         this.setState({
             isXNext:true,
-            values:emptyArray
+            isOver:false,
+            values:emptyArray,
+            isBack:true
         })
     }
 
@@ -150,25 +155,33 @@ class Game extends React.Component{
         console.log(seqIndex)
         const seqs = this.state.seqs
         const newValues = this.state.values.slice()
+        let isOver = false
         console.log(newValues)
-        for(let i=0;i<seqIndex;i++){
-            if(i%2===0){
-                newValues[seqs[i]] = 'X'
-            }else{
-                newValues[seqs[i]] = 'O'
-            }              
-        }
-        if(seqIndex<seqs.length){
+            for(let i=0;i<seqIndex;i++){
+                if(i%2===0){
+                    newValues[seqs[i]] = 'X'
+                }else{
+                    newValues[seqs[i]] = 'O'
+                }              
+            }
             for(let j=seqIndex;j<seqs.length;j++){
                 newValues[seqs[j]] = ''
             }
             console.log(newValues)
+            const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+            for(const line of lines){
+                if( (newValues[line[0]]==='X' || newValues[line[0]]==='O') && newValues[line[0]]===newValues[line[1]] && newValues[line[0]]===newValues[line[2]]){
+                    isOver = true
+                    console.log(line)
+                    break;
+                }
+            }
             this.setState({
             isXNext:seqIndex%2===0?true:false,
-            isOver:false,
-            values:newValues
-        })
-        }
+            isOver:isOver,
+            values:newValues,
+            isBack:true
+            })
     }
 
     render(){
