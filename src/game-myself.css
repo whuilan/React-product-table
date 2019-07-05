@@ -1,0 +1,21 @@
+/*井字棋样式*/
+/* .game{
+    display: flex;
+}
+.board-area{
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 20px;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+.square-button{
+    width:40px;
+    height: 40px;
+    border: 1px solid black;
+    border-bottom: 1px;
+    border-left: 1px;
+    background-color: transparent;
+} */
