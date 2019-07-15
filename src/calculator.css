@@ -1,0 +1,44 @@
+body{
+    padding:10px;
+}
+.calculator{
+    width: 206px;
+    border: 1px solid black;
+    padding: 15px 10px;
+}
+.show-area{
+    width:198px;
+    height: 80px;
+    border: 1px solid black;
+    margin-bottom: 6px;
+    padding-top:4px;
+    padding-left: 6px;
+}
+.operation-area{
+    width: 206px;
+}
+.button{
+    width:50px;
+    height: 50px;
+    margin-top: 2px;
+    font-size: 18px;
+}
+.merge-button{
+    width: 102px;
+    height: 50px;
+    margin-top: 2px;
+    font-size: 18px;
+}
+.operation-area > div{
+    display: flex;
+    justify-content: space-between;
+}
+.number-area{
+    width:154px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.operator-area{
+    width: 50px
+}
